@@ -1,0 +1,80 @@
+<div style="text-align: center;">
+  <h4>Server Access Analysis - EPA</h4>
+  <button mat-raised-button color="primary" (click)="fileInput.click()">
+    <mat-icon>cloud_upload</mat-icon>
+    <span>Add File</span>
+    <input #fileInput type="file" (change)="fileChanged($event)" style="display:none;" />
+  </button>
+
+  <button mat-stroked-button color="primary" (click)="fileDown.click()" [disabled]="!enable">Download File</button>
+  <a #fileDown class="btn btn-clear" title="Download JSON" [href]="downloadJsonHref" download="download.json"></a>
+</div>
+
+<!-- GRID -->
+<mat-grid-list cols="2" rowHeight="2:1">
+  <!-- HTTP METHODS -->
+  <mat-grid-tile>
+    <div style="text-align: center; width: 80%; height: 80%;">
+      HTTP Methods
+      <canvas baseChart
+        [data]="doughnutChartData"
+        [labels]="doughnutChartLabels"
+        [chartType]="doughnutChartType">
+      </canvas>
+    </div>
+  </mat-grid-tile>
+
+  <!-- Requests per Minute -->
+  <mat-grid-tile>
+    <div style="text-align: center; width: 80%; height: 80%;">
+      Requests per Minute
+      <canvas baseChart
+        [data]="polarAreaChartData"
+        [labels]="polarAreaChartLabels"
+        [legend]="polarAreaLegend"
+        [chartType]="polarAreaChartType">
+      </canvas>
+    </div>
+  </mat-grid-tile>
+
+  <!-- Response Codes -->
+  <mat-grid-tile>
+    <div class="chart" style="text-align: center; width: 80%; height: 80%;">
+      Response Codes
+      <canvas baseChart
+        [data]="pieChartData"
+        [labels]="pieChartLabels"
+        [chartType]="pieChartType"
+        [legend]="pieChartLegend">
+      </canvas>
+    </div>
+  </mat-grid-tile>
+
+  <!-- HTTP METHODS -->
+  <mat-grid-tile>
+    <div class="mat-elevation-z8" style="width: 90%;">
+      <table mat-table [dataSource]="dataSource">
+
+        <ng-container matColumnDef="document_size">
+          <th mat-header-cell *matHeaderCellDef> Answer Size </th>
+          <td mat-cell *matCellDef="let element"> {{element.document_size}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="host">
+          <th mat-header-cell *matHeaderCellDef> HOST </th>
+          <td mat-cell *matCellDef="let element"> {{element.host}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="response_code">
+          <th mat-header-cell *matHeaderCellDef> Resp Code </th>
+          <td mat-cell *matCellDef="let element"> {{element.response_code}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>
